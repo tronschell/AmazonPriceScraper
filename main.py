@@ -106,26 +106,29 @@ soup = BeautifulSoup(req.text, "html.parser")
 itemName = soup.find("span", attrs={'id': 'productTitle'}).string.strip()
 
 # Exception handling for if the link doesnt include a /dp/ in it and/or if there is not /ref.
+# Also found a piece of code online for making sure the ASIN is a set of numbers and letters with no symbols.
+
 try:
     splitHere = url.split("/dp/")[1]
+    itemAsin = splitHere.split("/ref")[0]
     itemAsin = splitHere.split("/ref=")[0]
-except AttributeError:
-    itemAsin = splitHere.split("?")[0]
-except IndexError:
-    splitHere = url.split("/product/")[1]
-    itemAsin = splitHere.split("/ref=")[0]
-    try:
-        itemAsin = splitHere.split("?")[0]
-    except AttributeError:
-        itemAsin = 0
+    itemAsin = itemAsin[0:10]
 
-# Exception handling for if the listing has a "dealprice" instead of a "ourprice"
+except:
+    splitHere = url.split("/product/")[1]
+    itemAsin = splitHere.split("/ref")[0]
+    itemAsin = splitHere.split("/ref=")[0]
+    itemAsin = itemAsin[0:10]
+# Exception handling for if the listing has a different price blocks
 try:
     itemPrice = soup.find(
         "span", attrs={'id': 'priceblock_ourprice'}).string.strip()
 except AttributeError:
     itemPrice = soup.find(
-        "span", attrs={'id': 'priceblock_dealprice'}).string.strip()
+        "span", attrs={'id': 'price_inside_buybox'}).string.strip()
+except:
+    itemPrice = soup.find(
+        "span", attrs={'id': 'newBuyBoxPrice'}).string.strip()
 
 if listTables() == []:
     makeTable()
@@ -133,6 +136,9 @@ if listTables() == []:
     print("Products table created!")
 else:
     pass
+
+print(listContent())
+
 
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
