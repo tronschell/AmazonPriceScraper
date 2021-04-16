@@ -1,8 +1,9 @@
 
 <h1>Amazon Price Tracker Prototype</h1>
 
-  
-
+ 
+<h2>UPDATE:</h2>
+Because of this project, I got a job in a research position with Professor Ke-an Wu for the Summer of 2021.
 
 <h2>Purpose:</h2>
 
