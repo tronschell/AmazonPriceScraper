@@ -103,7 +103,8 @@ url = input('Insert the Amazon URL: ')
 req = requests.get(url, headers=HEADERS)
 soup = BeautifulSoup(req.text, "html.parser")
 
-itemName = soup.find("span", attrs={'id': 'productTitle'}).string.strip()
+itemName = soup.find(
+    "span", attrs={'id': 'productTitle'}).string.strip()
 
 # Exception handling for if the link doesnt include a /dp/ in it and/or if there is not /ref.
 # Also found a piece of code online for making sure the ASIN is a set of numbers and letters with no symbols.
@@ -119,6 +120,10 @@ except:
     itemAsin = splitHere.split("/ref")[0]
     itemAsin = splitHere.split("/ref=")[0]
     itemAsin = itemAsin[0:10]
+
+#Test case 1, showing that the splitting works and the item ASIN can be successfully saved into the database later.
+print(itemAsin)
+
 # Exception handling for if the listing has a different price blocks
 try:
     itemPrice = soup.find(
@@ -139,21 +144,17 @@ else:
 
 print(listContent())
 
+dt_string = now.strftime("%m/%d/%Y]")
 
-dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+data = (itemAsin, itemPrice, dt_string)
 
-data_1 = (itemAsin, itemPrice, dt_string)
+insertTable(data)
 
-insertTable(data_1)
-# Since data is returned as a list from the minMaxAvg() function, we need to add data to individual variables before we call them in the formatted string.
 finalLst = minMaxAvg(itemAsin)
-Minimum = finalLst[0]
-Maximum = finalLst[1]
-Average = finalLst[2]
 
-
+# Test Case 2, showing that all of the outputs from the database works.
 print(f"""
 +========================================================================================================================+
-{itemName}  |  ASIN : {itemAsin}               
-        Minimum : ${finalLst[0]}  |  Maximum : ${Maximum}  |  Average Price : ${Average}  |  Current Price  :  {itemPrice}
+{itemName}  |  ASIN : {itemAsin}
+        Minimum : ${finalLst[0]}  |  Maximum : ${finalLst[0]}  |  Average Price : ${finalLst[2]}  |  Current Price  :  {itemPrice}
 +========================================================================================================================+""")
