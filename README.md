@@ -1,10 +1,6 @@
 
 <h1>Amazon Price Tracker Prototype</h1>
 
- 
-<h2>UPDATE:</h2>
-Because of this project, I got a job in a research position with Professor Ke-an Wu for the Summer of 2021.
-
 <h2>Purpose:</h2>
 
 The purpose of this program is to track the prices of different amazon products to inform the buyer if it is currently the best time to buy the product or not. The program will be at least 100 lines, however it will be as modular as possible as I think this project could be something that I could turn into an API in the future for future use.
